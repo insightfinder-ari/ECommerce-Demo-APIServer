@@ -41,7 +41,7 @@ All settings come from environment variables (see `.env.example`).
 | `DB2_PASSWORD` | *(empty)* | password |
 | `POOL_MIN_SIZE` | `2` | connections opened at startup |
 | `POOL_MAX_SIZE` | `20` | maximum connections checked out at once |
-| `POOL_ACQUIRE_TIMEOUT` | `5` | seconds to wait for a connection before returning 503 |
+| `POOL_ACQUIRE_TIMEOUT` | `0.05` | seconds to wait for a connection before returning 503; kept short so an exhausted pool fails fast (503s) instead of inflating request latency |
 | `APP_PORT` | `8000` | HTTP listen port |
 | `LOG_LEVEL` | `INFO` | `DEBUG` also logs each physical connection open/close |
 | `LOG_FILE` | *(empty)* | write logs to this file instead of stdout (the systemd unit sets `/var/log/apiserver/apiserver.log`) |
