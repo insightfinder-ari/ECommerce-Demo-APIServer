@@ -21,7 +21,7 @@ the same rate on its own:
 Run the normal locustfile at the same time so there is real traffic to degrade.
 
 Knobs (environment variables):
-    LEAK_DURATION  seconds from the first leak to the last (default 900, 15 min)
+    LEAK_DURATION  seconds from the first leak to the last (default 7200, 2 hours)
     LEAK_COUNT     connections to leak; set it to the apiserver's POOL_MAX_SIZE
                    to end with an exhausted pool (default 20)
     MISS_ID_BASE   first product id to request; must be above the real catalog
@@ -43,7 +43,7 @@ from locust import HttpUser, constant_pacing, task
 
 log = logging.getLogger("leak")
 
-LEAK_DURATION = float(os.getenv("LEAK_DURATION", "900"))
+LEAK_DURATION = float(os.getenv("LEAK_DURATION", "7200"))
 LEAK_COUNT = int(os.getenv("LEAK_COUNT", "20"))
 MISS_ID_BASE = int(os.getenv("MISS_ID_BASE", "10000000"))
 
