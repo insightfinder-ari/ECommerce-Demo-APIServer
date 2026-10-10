@@ -25,16 +25,11 @@ def list_products(
 
 @router.get("/products/{id}")
 def get_product(id: int, pool: Db2Pool = Depends(get_pool)):
-    conn = pool.acquire()
-    product = queries.get_product(conn, id)
-    if product is None:
-        # BUG: the connection acquired above is never released on this path, so
-        # every lookup of a missing product leaks one pool connection. Once
-        # POOL_MAX_SIZE connections have leaked, every DB request waits
-        # POOL_ACQUIRE_TIMEOUT and then fails with 503 db_pool_timeout.
-        raise ApiError(404, "product_not_found", f"product {id} not found", product_id=id)
-    pool.release(conn)
-    return product
+    with pool.connection() as conn:
+        product = queries.get_product(conn, id)
+        if product is None:
+            raise ApiError(404, "product_not_found", f"product {id} not found", product_id=id)
+        return product
 
 
 @router.get("/categories")
