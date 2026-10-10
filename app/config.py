@@ -34,7 +34,7 @@ def load_settings() -> Settings:
         db2_password=env.get("DB2_PASSWORD", ""),
         pool_min_size=int(env.get("POOL_MIN_SIZE", "2")),
         pool_max_size=int(env.get("POOL_MAX_SIZE", "20")),
-        pool_acquire_timeout=float(env.get("POOL_ACQUIRE_TIMEOUT", "0.05")),
+        pool_acquire_timeout=float(env.get("POOL_ACQUIRE_TIMEOUT", "0.005")),
         app_port=int(env.get("APP_PORT", "8000")),
         log_level=env.get("LOG_LEVEL", "INFO").upper(),
         log_file=env.get("LOG_FILE") or None,

@@ -41,7 +41,7 @@ All settings come from environment variables (see `.env.example`).
 | `DB2_PASSWORD` | *(empty)* | password |
 | `POOL_MIN_SIZE` | `2` | connections opened at startup |
 | `POOL_MAX_SIZE` | `20` | maximum connections checked out at once |
-| `POOL_ACQUIRE_TIMEOUT` | `0.05` | seconds to wait for a connection before returning 503; kept short so an exhausted pool fails fast (503s) instead of inflating request latency |
+| `POOL_ACQUIRE_TIMEOUT` | `0.005` | seconds to wait for a connection before returning 503. Kept at 5 ms so that when the pool is exhausted the 503s take about as long as normal requests (p95 ≈ 10 ms) and do not move the latency percentiles |
 | `APP_PORT` | `8000` | HTTP listen port |
 | `LOG_LEVEL` | `INFO` | `DEBUG` also logs each physical connection open/close |
 | `LOG_FILE` | *(empty)* | write logs to this file instead of stdout (the systemd unit sets `/var/log/apiserver/apiserver.log`) |
@@ -129,7 +129,7 @@ docker run --rm --env-file .env apiserver python sql/seed.py
 
 ```bash
 sudo deploy/install.sh          # installs to /opt/apiserver, enables + starts the service
-sudoedit /etc/apiserver.env     # created from .env.example on first install
+sudoedit /opt/apiserver/.env    # the unit's EnvironmentFile
 sudo systemctl restart apiserver
 tail -f /var/log/apiserver/apiserver.log   # follow application logs
 journalctl -u apiserver -f                 # startup errors / crash tracebacks
