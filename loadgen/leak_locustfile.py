@@ -149,5 +149,5 @@ class Leaker(HttpUser):
 
         if self.sent >= LEAK_COUNT:
             log.info("done: %d connections leaked in %.0fs; restart the apiserver to recover", self.leaked, elapsed)
-            send_change_event(FIX_EVENT)
+            #send_change_event(FIX_EVENT)
             self.environment.runner.quit()
